@@ -1,0 +1,33 @@
+name: Backend CI
+
+on:
+  workflow_dispatch:   # 👈 manual run
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install Dependencies
+        run: |
+          cd backend
+          npm install
+
+      - name: Run Tests
+        run: |
+          cd backend
+          npm test --if-present
+
+      - name: Start Backend Server
+        run: |
+          cd backend
+          npm start &
+          sleep 5
